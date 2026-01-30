@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Mobile Roadmap - Manus AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #020617;
+            --primary-blue: #3b82f6;
+            --text-main: #f8fafc;
+            --card-bg: #ffffff;
+            --node-bg: #1e293b;
+            --vertical-gap: 150px;
+            --horizontal-gap: 120px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 100px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #60a5fa, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: 1fr 280px 1fr;
+            gap: var(--vertical-gap) var(--horizontal-gap);
+            align-items: center;
+            position: relative;
+        }
+
+        
+        .roadmap-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--primary-blue), transparent);
+            transform: translateX(-50%);
+            z-index: 0;
+            opacity: 0.2;
+        }
+
+        .main-node {
+            grid-column: 2;
+            background: var(--node-bg);
+            border: 2px solid var(--primary-blue);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+            z-index: 10;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .side-card {
+            background: var(--card-bg);
+            color: #1e293b;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 320px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+            z-index: 10;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .side-card-header {
+            background: #1e293b;
+            color: white;
+            padding: 12px 18px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-bottom: 3px solid var(--primary-blue);
+            text-align: center;
+        }
+
+        
+        .card-orange .side-card-header { border-bottom-color: #f97316; }
+        .card-purple .side-card-header { border-bottom-color: #a855f7; }
+        .card-green .side-card-header { border-bottom-color: #22c55e; }
+        .card-pink .side-card-header { border-bottom-color: #ec4899; }
+
+        .side-card-content {
+            padding: 15px 20px;
+        }
+
+        .side-card-content li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+
+        .side-card-content li::before {
+            content: '•';
+            color: var(--primary-blue);
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        
+        
+        .card-orange .side-card-content li::before { color: #f97316; }
+        .card-purple .side-card-content li::before { color: #a855f7; }
+        .card-green .side-card-content li::before { color: #22c55e; }
+        .card-pink .side-card-content li::before { color: #ec4899; }
+
+        .left-side { grid-column: 1; justify-self: end; position: relative; width: 100%; display: flex; justify-content: flex-end; }
+        .right-side { grid-column: 3; justify-self: start; position: relative; width: 100%; display: flex; justify-content: flex-start; }
+
+        
+        .arrow-to-right, .arrow-to-left {
+            position: absolute;
+            top: 50%;
+            width: var(--horizontal-gap);
+            height: 2px;
+            background: var(--primary-blue);
+            transform: translateY(-50%);
+            z-index: 1;
+            opacity: 0.6;
+        }
+        .arrow-to-right { right: -var(--horizontal-gap); }
+        .arrow-to-left { left: -var(--horizontal-gap); }
+
+        
+        .multi-card {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            position: relative;
+            width: 100%;
+            transform: translateX(40px); 
+        }
+
+        .multi-card-connector-right, .multi-card-connector-left {
+            position: absolute;
+            width: 2px;
+            background: var(--primary-blue);
+            opacity: 0.3;
+            top: 40px;
+            bottom: 40px;
+        }
+        .multi-card-connector-right { right: -30px; }
+        .multi-card-connector-left { left: -30px; }
+
+        
+        .horizontal-branch-right, .horizontal-branch-left {
+            position: absolute;
+            height: 2px;
+            width: 30px;
+            top: 50%;
+            background: var(--primary-blue); 
+        }
+        .horizontal-branch-right { right: -30px; }
+        .horizontal-branch-left { left: -30px; }
+
+        .horizontal-branch-right::before, .horizontal-branch-left::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+        .horizontal-branch-right::before { left: 0; border-right: 8px solid var(--primary-blue); }
+        .horizontal-branch-left::before { right: 0; border-left: 8px solid var(--primary-blue); }
+
+       
+        .card-orange .horizontal-branch-right, .card-orange .horizontal-branch-left { background: #f97316; }
+        .card-orange .horizontal-branch-right::before { border-right-color: #f97316; }
+        .card-orange .horizontal-branch-left::before { border-left-color: #f97316; }
+
+        .card-purple .horizontal-branch-right, .card-purple .horizontal-branch-left { background: #a855f7; }
+        .card-purple .horizontal-branch-right::before { border-right-color: #a855f7; }
+        .card-purple .horizontal-branch-left::before { border-left-color: #a855f7; }
+
+        .card-green .horizontal-branch-right, .card-green .horizontal-branch-left { background: #22c55e; }
+        .card-green .horizontal-branch-right::before { border-right-color: #22c55e; }
+        .card-green .horizontal-branch-left::before { border-left-color: #22c55e; }
+
+        .card-pink .horizontal-branch-right, .card-pink .horizontal-branch-left { background: #ec4899; }
+        .card-pink .horizontal-branch-right::before { border-right-color: #ec4899; }
+        .card-pink .horizontal-branch-left::before { border-left-color: #ec4899; }
+
+        .multi-arrow-right, .multi-arrow-left {
+            position: absolute;
+            top: 50%;
+            width: 90px;
+            height: 2px;
+            background: var(--primary-blue);
+            transform: translateY(-50%);
+            opacity: 0.6;
+        }
+        .multi-arrow-right { right: -120px; }
+        .multi-arrow-left { left: -120px; }
+
+        footer {
+            text-align: center;
+            padding: 60px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 80px;
+            color: #64748b;
+        }
+
+        @media (max-width: 1100px) {
+            .roadmap-grid { grid-template-columns: 1fr; gap: 50px; }
+            .roadmap-grid::before { left: 20px; transform: none; }
+            .main-node, .left-side, .right-side { grid-column: 1; justify-self: stretch; margin-left: 50px; }
+            .side-card { max-width: 100%; }
+            .arrow-to-left, .arrow-to-right, .multi-card-connector-left, .multi-card-connector-right, .multi-arrow-left, .multi-arrow-right { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <span class="bg-blue-900/40 text-blue-400 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-4 inline-block border border-blue-500/20">2026 Developer Path</span>
+            <h1>Mobile App Development</h1>
+           
+        </header>
+
+        <div class="roadmap-grid">
+            
+            
+            <div class="left-side">
+                <div class="side-card">
+                    
+                    <div class="side-card-header">Networks</div>
+                    <div class="side-card-content">
+                        <ul>
+                            <li>HTTP / HTTPS Protocols</li>
+                            <li>DNS & Domains</li>
+                            <li>RESTful APIs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="main-node">Fundamentals</div>
+            <div></div>
+
+            
+            <div></div>
+            <div class="main-node">Core Web</div>
+            <div class="right-side">
+                <div class="side-card">
+                    
+                    <div class="side-card-header">Basic Programming</div>
+                    <div class="side-card-content">
+                        <ul>
+                            <li>Variables & Data Types</li>
+                            <li>Functions & Scopes</li>
+                            <li>OOP Concepts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="left-side">
+                <div class="multi-card">
+                    <div class="multi-card-connector-right"></div>
+                    
+                    <div class="card-orange">
+                        <div class="side-card">
+                            <div class="horizontal-branch-right"></div>
+                            <div class="side-card-header">CSS Styling</div>
+                            <div class="side-card-content">
+                                <ul><li>Flexbox & Grid</li><li>Animations</li></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-purple">
+                        <div class="side-card">
+                            <div class="horizontal-branch-right"></div>
+                            <div class="side-card-header">Mobile UI/UX</div>
+                            <div class="side-card-content">
+                                <ul><li>Material Design</li><li>Touch Interactions</li></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="multi-arrow-right"></div>
+                </div>
+            </div>
+            <div class="main-node">Design & UI</div>
+            <div></div>
+
+            
+            <div></div>
+            <div class="main-node">Logic & Platforms</div>
+            <div class="right-side">
+                <div class="multi-card">
+                    <div class="multi-card-connector-left"></div>
+
+                    <div class="card-green">
+                        <div class="side-card">
+                            <div class="horizontal-branch-left"></div>
+                            <div class="side-card-header">Android (Kotlin)</div>
+                            <div class="side-card-content">
+                                <ul><li>Jetpack Compose</li><li>Android Studio</li></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-pink">
+                        <div class="side-card">
+                            <div class="horizontal-branch-left"></div>
+                            <div class="side-card-header">iOS (Swift)</div>
+                            <div class="side-card-content">
+                                <ul><li>SwiftUI Framework</li><li>Xcode Environment</li></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="multi-arrow-left"></div>
+                </div>
+            </div>
+
+            
+            <div class="left-side">
+                <div class="side-card">
+                    
+                    <div class="side-card-header">Cross-Platform</div>
+                    <div class="side-card-content">
+                        <ul>
+                            <li>React Native</li>
+                            <li>Flutter (Dart)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="main-node">Native & Hybrid</div>
+            <div></div>
+
+        </div>
+
+       
+    </div>
+
+</body>
+</html>
